@@ -101,11 +101,6 @@ void render_playfield(char field[X][Y]) {
 }
 
 void move(char field[X][Y], int direction) {
-  /* if ((POSX == 0 && POSY == 0) || (POSX == 0 && POSY == Y - 1) || */
-  /*     (POSX == X - 1 && POSY == 0) || (POSX == X - 1 && POSY == Y - 1) || */
-  /*     (POSX == 0 || POSX == X - 1) || (POSY == 0 || POSY == Y - 1)) { */
-  /*   ALIVE = 0; */
-  /* } */
   field[POSX][POSY] = ' ';
 
   switch (direction) {
@@ -212,6 +207,7 @@ int main(void) {
       POSX = 1;
       POSY = 1;
       fill_playfield(field);
+      generate_apple(field);
       continue;
     }
     if (r != 0) {
