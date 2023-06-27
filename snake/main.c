@@ -1,8 +1,10 @@
+
 #include <stdio.h>
 #include <stdlib.h>
-#include <termios.h>
 #include <time.h>
 #include <unistd.h>
+
+#include "../lib.h"
 
 #define X 32
 #define Y 48
@@ -29,27 +31,12 @@ char KEYBINDS[9][20] = {"w,k - up",
                         "G - end of column",
                         "q - quit"};
 
-struct termios orig_termios;
-
 int SCORE = 0;
 int ALIVE = 1;
 int SPEED = 1;
 int APPLE = 0;
 int POSX = 1;
 int POSY = 1;
-
-void disable_raw_mode() { tcsetattr(STDIN_FILENO, TCSAFLUSH, &orig_termios); }
-
-void enable_raw_mode() {
-  tcgetattr(STDIN_FILENO, &orig_termios);
-  atexit(disable_raw_mode);
-
-  struct termios raw = orig_termios;
-  tcgetattr(STDIN_FILENO, &raw);
-
-  raw.c_lflag &= ~(ECHO | ICANON);
-  tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
-}
 
 void generate_apple(char field[X][Y]) {
   if (APPLE >= MAX_APPLE)
@@ -184,7 +171,7 @@ int handle_input(char field[X][Y], char *in) {
 }
 
 int main(void) {
-  enable_raw_mode();
+  lib_enable_raw_mode();
   srand(time(NULL));
 
   char field[X][Y];

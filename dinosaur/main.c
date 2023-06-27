@@ -1,7 +1,8 @@
+#include "../lib.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
-  printf("@\n");
+  lib_enable_raw_mode();
   return EXIT_SUCCESS;
 }
