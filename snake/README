@@ -1,13 +1,22 @@
 CSNAKE
 ======
 
-Snake implementation in c
+Snake implementation in c with vim keybindings:
+
+w,k     - go up
+s,j     - go down
+a,h     - go left
+d,l     - go right
+0       - go to start of row
+$       - go to end of row
+g       - go to start of column
+G       - go to end of column
+q       - quit            
 
 Run locally
 -----------
-
-    git clone https://github.com/xnacly/csnake
-    make
+           
+    make   
 
 TODO
 ----
