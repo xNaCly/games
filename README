@@ -1,0 +1,18 @@
+games
+=====
+
+This repository contains a collection of games implemented in various languages, but mainly c.
+
+Running them
+------------
+
+    git clone https://github.com/xnacly/games
+
+Every directory of this repository contains a singular game, for example 'snake':
+
+    cd snake
+
+Building and running these games is done via 'make' and a 'Makefile' in every sub directory:
+    
+    make
+
