@@ -1,0 +1,10 @@
+DINOSAUR
+====
+
+Implementation of the popular dinosaur game included in the chromium browser.
+
+
+Run
+---
+
+    make
