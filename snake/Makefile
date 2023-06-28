@@ -12,7 +12,7 @@ flags = -fdiagnostics-color=always  \
 
 all: main.out
 	./main.out	
-main.out:
+main.out: clean
 	$(CC) main.c $(libs) $(flags) -o main.out
 clean:
-	rm main.out
+	rm -fr main.out

@@ -7,7 +7,9 @@
  */
 char io_read_char(void);
 
-#define print_err(s)                                                           \
-  { fprintf(stderr, "err: %s\n", s); }
+/*
+ * prints `s` suffixed with '\n' to stderr
+ */
+void io_print_err(char *s);
 
 #endif

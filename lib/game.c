@@ -6,7 +6,7 @@
 char **game_alloc(int width, int height) {
   char **matrix = (char **)malloc(sizeof(char *) * width);
   if (matrix == NULL) {
-    print_err("matrix is NULL, allocation failed! - returning NULL");
+    io_print_err("matrix is NULL, allocation failed! - returning NULL");
     return NULL;
   }
 
@@ -19,7 +19,7 @@ char **game_alloc(int width, int height) {
 
 void game_destroy(char **matrix, int width) {
   if (matrix == NULL) {
-    print_err("matrix already NULL, means it's possibly been freed already");
+    io_print_err("matrix already NULL, means it's possibly been freed already");
     return;
   }
 
@@ -33,7 +33,7 @@ void game_destroy(char **matrix, int width) {
 
 void game_render(char **matrix, int width, int height) {
   if (matrix == NULL) {
-    print_err("matrix is NULL, can't render anything");
+    io_print_err("matrix is NULL, can't render anything");
     return;
   }
 
