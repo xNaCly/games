@@ -4,7 +4,7 @@
 #include <termios.h>
 #include <unistd.h>
 
-struct termios orig_termios;
+static struct termios orig_termios;
 
 /**
  * disables raw mode, commonly enabled via `enable_raw_mode`
