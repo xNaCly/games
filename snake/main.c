@@ -169,6 +169,7 @@ int handle_input(char **field, char *in) {
 
 int main(void) {
   term_enable_raw_mode();
+  term_disable_buffering(stdout);
   srand(time(NULL));
 
   char **field = game_alloc(WIDTH, HEIGHT);
