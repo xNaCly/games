@@ -15,4 +15,4 @@ all: main.out
 main.out:
 	$(CC) main.c $(libs) $(flags) -o main.out
 clean:
-	rm main.out
+	rm -fr main.out
