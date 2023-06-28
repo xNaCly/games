@@ -23,3 +23,6 @@ void term_enable_raw_mode(void) {
   raw.c_lflag &= ~(ECHO | ICANON);
   tcsetattr(STDIN_FILENO, TCSAFLUSH, &raw);
 }
+
+void term_disable_buffering(FILE *buf) { setvbuf(buf, NULL, _IONBF, 0); }
+void term_enable_buffering(FILE *buf) { setvbuf(buf, NULL, _IOLBF, 0); }
