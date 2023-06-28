@@ -1,13 +1,14 @@
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
 
-#include "../lib.h"
+#include "../lib/game.h"
+#include "../lib/io.h"
+#include "../lib/term.h"
 
-#define X 32
-#define Y 48
+#define WIDTH 32
+#define HEIGHT 48
 
 const int MAX_APPLE = 5;
 enum move {
@@ -38,30 +39,30 @@ int APPLE = 0;
 int POSX = 1;
 int POSY = 1;
 
-void generate_apple(char field[X][Y]) {
+void generate_apple(char **field) {
   if (APPLE >= MAX_APPLE)
     return;
   int x;
   int y;
   do {
-    x = rand() % X - 2;
-    y = rand() % Y - 3;
+    x = rand() % WIDTH - 2;
+    y = rand() % HEIGHT - 3;
   } while (x < 1 || y < 1);
   field[x][y] = 'O';
   APPLE++;
 }
 
-void fill_playfield(char field[X][Y]) {
-  for (int i = 0; i < X; i++) {
-    for (int j = 0; j < Y; j++) {
+void fill_playfield(char **field) {
+  for (int i = 0; i < WIDTH; i++) {
+    for (int j = 0; j < HEIGHT; j++) {
       char c = ' ';
 
-      if ((i == 0 && j == 0) || (i == 0 && j == Y - 1) ||
-          (i == X - 1 && j == 0) || (i == X - 1 && j == Y - 1)) {
+      if ((i == 0 && j == 0) || (i == 0 && j == HEIGHT - 1) ||
+          (i == WIDTH - 1 && j == 0) || (i == WIDTH - 1 && j == HEIGHT - 1)) {
         c = '+';
-      } else if (i == 0 || i == X - 1) {
+      } else if (i == 0 || i == WIDTH - 1) {
         c = '-';
-      } else if (j == 0 || j == Y - 1) {
+      } else if (j == 0 || j == HEIGHT - 1) {
         c = '|';
       } else if (j == 1 && i == 1) {
         c = '@';
@@ -72,22 +73,17 @@ void fill_playfield(char field[X][Y]) {
   }
 }
 
-void render_playfield(char field[X][Y]) {
+void render_playfield(char **field) {
   printf("\e[1;1H\e[2J");
   printf("Keybinds:\n");
   for (size_t i = 0; i < sizeof(KEYBINDS) / sizeof(KEYBINDS[0]); i++) {
     printf("\t%s\n", KEYBINDS[i]);
   }
   printf("SCORE: %d\n", SCORE);
-  for (int i = 0; i < X; i++) {
-    for (int j = 0; j < Y; j++) {
-      printf("%c", field[i][j]);
-    }
-    printf("\n");
-  }
+  game_render(field, WIDTH, HEIGHT);
 }
 
-void move(char field[X][Y], int direction) {
+void move(char **field, int direction) {
   field[POSX][POSY] = ' ';
 
   switch (direction) {
@@ -95,13 +91,13 @@ void move(char field[X][Y], int direction) {
     POSY = 1;
     break;
   case END:
-    POSY = Y - 2;
+    POSY = HEIGHT - 2;
     break;
   case TOP:
     POSX = 1;
     break;
   case BOTTOM:
-    POSX = X - 2;
+    POSX = WIDTH - 2;
     break;
   case UP:
     POSX -= SPEED;
@@ -110,7 +106,7 @@ void move(char field[X][Y], int direction) {
     break;
   case DOWN:
     POSX += SPEED;
-    if (POSX >= X - 2)
+    if (POSX >= WIDTH - 2)
       ALIVE = 0;
     break;
   case LEFT:
@@ -120,7 +116,7 @@ void move(char field[X][Y], int direction) {
     break;
   case RIGHT:
     POSY += SPEED;
-    if (POSY >= Y - 2)
+    if (POSY >= HEIGHT - 2)
       ALIVE = 0;
     break;
   }
@@ -134,7 +130,7 @@ void move(char field[X][Y], int direction) {
   field[POSX][POSY] = '@';
 }
 
-int handle_input(char field[X][Y], char *in) {
+int handle_input(char **field, char *in) {
   switch (*in) {
   case 'w':
   case 'k':
@@ -171,17 +167,18 @@ int handle_input(char field[X][Y], char *in) {
 }
 
 int main(void) {
-  lib_enable_raw_mode();
+  term_enable_raw_mode();
   srand(time(NULL));
 
-  char field[X][Y];
+  char **field = game_alloc(WIDTH, HEIGHT);
   fill_playfield(field);
   generate_apple(field);
   render_playfield(field);
 
   char c;
 
-  while (read(STDIN_FILENO, &c, 1) == 1) {
+  while (c = io_read_char(), c != -1) {
+
     int r = handle_input(field, &c);
     if (!ALIVE) {
       printf("\e[1;1H\e[2J");
@@ -197,13 +194,16 @@ int main(void) {
       generate_apple(field);
       continue;
     }
+
     if (r != 0) {
       printf("\nexit...\n");
       break;
     }
+
     c = 0;
     render_playfield(field);
   }
 
+  game_destroy(field, WIDTH);
   return EXIT_SUCCESS;
 }

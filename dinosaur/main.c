@@ -1,8 +1,8 @@
-#include "../lib.h"
+#include "../lib/term.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 int main(void) {
-  lib_enable_raw_mode();
+  term_enable_raw_mode();
   return EXIT_SUCCESS;
 }
