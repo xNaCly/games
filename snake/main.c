@@ -74,7 +74,7 @@ void fill_playfield(char **field) {
 }
 
 void render_playfield(char **field) {
-  printf("\e[1;1H\e[2J");
+  printf("\033[1;1H\033[2J");
   printf("Keybinds:\n");
   for (size_t i = 0; i < sizeof(KEYBINDS) / sizeof(KEYBINDS[0]); i++) {
     printf("\t%s\n", KEYBINDS[i]);
@@ -178,10 +178,9 @@ int main(void) {
   char c;
 
   while (c = io_read_char(), c != -1) {
-
     int r = handle_input(field, &c);
     if (!ALIVE) {
-      printf("\e[1;1H\e[2J");
+      printf("\033[1;1H\033[2J");
       printf("game over, press any key");
       fflush(stdout);
       SCORE = 0;
