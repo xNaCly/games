@@ -1,7 +1,18 @@
 libs = $(shell find ../lib -name "*.c")
+flags = -fdiagnostics-color=always  \
+	 -Wall \
+	 -Wpedantic \
+	 -std=c11 \
+	 -Wextra \
+	 -Werror \
+	 -Wshadow \
+	 -Wundef \
+	 -g \
+	 -fno-common
+
 all: main.out
 	./main.out	
 main.out:
-	$(CC) main.c $(libs) -g -Wall -Wextra -Werror --std=c11 -o main.out
+	$(CC) main.c $(libs) $(flags) -o main.out
 clean:
 	rm main.out
