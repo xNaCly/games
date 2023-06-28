@@ -6,6 +6,7 @@
 #include "../lib/game.h"
 #include "../lib/io.h"
 #include "../lib/term.h"
+#include "../lib/util.h"
 
 #define WIDTH 32
 #define HEIGHT 48
@@ -76,7 +77,7 @@ void fill_playfield(char **field) {
 void render_playfield(char **field) {
   printf("\033[1;1H\033[2J");
   printf("Keybinds:\n");
-  for (size_t i = 0; i < sizeof(KEYBINDS) / sizeof(KEYBINDS[0]); i++) {
+  for (size_t i = 0; i < ARRAY_SIZE(KEYBINDS); i++) {
     printf("\t%s\n", KEYBINDS[i]);
   }
   printf("SCORE: %d\n", SCORE);
