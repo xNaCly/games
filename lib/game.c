@@ -43,4 +43,4 @@ void game_render(char **matrix, int width, int height) {
     }
     printf("\n");
   }
-};
+}

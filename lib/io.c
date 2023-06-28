@@ -10,4 +10,4 @@ char io_read_char(void) {
     return -1;
   }
   return r;
-};
+}
