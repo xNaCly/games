@@ -7,4 +7,7 @@
  */
 char io_read_char(void);
 
+#define print_err(s)                                                           \
+  { fprintf(stderr, "err: %s\n", s); }
+
 #endif

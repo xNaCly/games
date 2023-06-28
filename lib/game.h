@@ -2,7 +2,8 @@
 #define GAME_H_
 
 /*
- * allocates `width` rows with `height` elements in `matrix`
+ * allocates `width` rows with `height` elements in `matrix`. Remember to
+ * dealloc the matrix when tearing down via the `game_destroy` method
  */
 char **game_alloc(int width, int height);
 
