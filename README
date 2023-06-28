@@ -16,3 +16,8 @@ Building and running these games is done via 'make' and a 'Makefile' in every su
     
     make
 
+
+Disclaimer
+----------
+
+All games were tested on Ubuntu and Arch, unix like operating system should work.
