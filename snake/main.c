@@ -8,8 +8,13 @@
 #include "../lib/term.h"
 #include "../lib/util.h"
 
+// TODO: snake tail
+// TODO: snake tail collision
+// TODO: moving through apple with vi keys should consume the apple
+
 #define WIDTH 32
 #define HEIGHT 16
+#define APPLE_CHAR 'A'
 
 const int MAX_APPLE = 5;
 enum move {
@@ -49,7 +54,7 @@ void generate_apple(char **field) {
     x = rand() % WIDTH - 2;
     y = rand() % HEIGHT - 3;
   } while (x < 1 || y < 1);
-  field[x][y] = 'O';
+  field[x][y] = APPLE_CHAR;
   APPLE++;
 }
 
@@ -122,7 +127,7 @@ void move(char **field, int direction) {
     break;
   }
 
-  if (field[POSX][POSY] == 'O') {
+  if (field[POSX][POSY] == APPLE_CHAR) {
     APPLE--;
     SCORE++;
     generate_apple(field);
