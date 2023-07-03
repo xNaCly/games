@@ -18,9 +18,33 @@ Run locally
            
     make   
 
-TODO
-----
+Showcase
+--------
 
-* tail
-* collision with tail
-* speed increase with longer tail
+    Keybinds:
+            w,k - up
+            s,j - down
+            a,h - left
+            d,l - right
+            0 - start of row
+            $ - end of row
+            g - start of column
+            G - end of column
+            q - quit
+    SCORE: 0
+    +------------------------------+
+    |@                             |
+    |                              |
+    |                              |
+    |           A                  |
+    |                              |
+    |                              |
+    |                              |
+    |                              |
+    |                              |
+    |                              |
+    |                              |
+    |                              |
+    |                              |
+    |                              |
+    +------------------------------+
