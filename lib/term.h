@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 
+#define ESCAPE_CODE_CLEAR "\033[1;1H\033[2J"
+
 /**
  * enables raw input mode, which allows for unbuffered scanning of STDIN via
  * the `lib/io.h` utilities
@@ -18,5 +20,10 @@ void term_disable_buffering(FILE *buf);
  * sets buffering for `buf` to `_IOLBF` (line buffering)
  */
 void term_enable_buffering(FILE *buf);
+
+/**
+ * sends 'ESCAPE_CODE_CLEAR' to the terminal, this should clear the screen
+ */
+void term_clear();
 
 #endif
