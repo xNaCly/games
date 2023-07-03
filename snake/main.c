@@ -9,7 +9,7 @@
 #include "../lib/util.h"
 
 #define WIDTH 32
-#define HEIGHT 48
+#define HEIGHT 16
 
 const int MAX_APPLE = 5;
 enum move {
@@ -62,9 +62,9 @@ void fill_playfield(char **field) {
           (i == WIDTH - 1 && j == 0) || (i == WIDTH - 1 && j == HEIGHT - 1)) {
         c = '+';
       } else if (i == 0 || i == WIDTH - 1) {
-        c = '-';
-      } else if (j == 0 || j == HEIGHT - 1) {
         c = '|';
+      } else if (j == 0 || j == HEIGHT - 1) {
+        c = '-';
       } else if (j == 1 && i == 1) {
         c = '@';
       }
@@ -75,7 +75,7 @@ void fill_playfield(char **field) {
 }
 
 void render_playfield(char **field) {
-  printf("\033[1;1H\033[2J");
+  term_clear();
   printf("Keybinds:\n");
   for (size_t i = 0; i < ARRAY_SIZE(KEYBINDS); i++) {
     printf("\t%s\n", KEYBINDS[i]);
@@ -89,35 +89,35 @@ void move(char **field, int direction) {
 
   switch (direction) {
   case START:
-    POSY = 1;
-    break;
-  case END:
-    POSY = HEIGHT - 2;
-    break;
-  case TOP:
     POSX = 1;
     break;
-  case BOTTOM:
+  case END:
     POSX = WIDTH - 2;
     break;
+  case TOP:
+    POSY = 1;
+    break;
+  case BOTTOM:
+    POSY = HEIGHT - 2;
+    break;
   case UP:
-    POSX -= SPEED;
-    if (POSX < 1)
-      ALIVE = 0;
-    break;
-  case DOWN:
-    POSX += SPEED;
-    if (POSX >= WIDTH - 2)
-      ALIVE = 0;
-    break;
-  case LEFT:
     POSY -= SPEED;
     if (POSY < 1)
       ALIVE = 0;
     break;
-  case RIGHT:
+  case DOWN:
     POSY += SPEED;
     if (POSY >= HEIGHT - 2)
+      ALIVE = 0;
+    break;
+  case LEFT:
+    POSX -= SPEED;
+    if (POSX < 1)
+      ALIVE = 0;
+    break;
+  case RIGHT:
+    POSX += SPEED;
+    if (POSX >= WIDTH - 2)
       ALIVE = 0;
     break;
   }
@@ -182,8 +182,8 @@ int main(void) {
   while (c = io_read_char(), c != -1) {
     int r = handle_input(field, &c);
     if (!ALIVE) {
-      printf("\033[1;1H\033[2J");
-      printf("game over, press any key");
+      term_clear();
+      puts("game over, press any key");
       fflush(stdout);
       SCORE = 0;
       ALIVE = 1;
@@ -197,7 +197,8 @@ int main(void) {
     }
 
     if (r != 0) {
-      printf("\nexit...\n");
+      term_clear();
+      puts("exit...");
       break;
     }
 
