@@ -37,9 +37,9 @@ void game_render(char **matrix, int width, int height) {
     return;
   }
 
-  for (int i = 0; i < width; i++) {
-    for (int j = 0; j < height; j++) {
-      printf("%c", matrix[i][j]);
+  for (int i = 0; i < height; i++) {
+    for (int j = 0; j < width; j++) {
+      printf("%c", matrix[j][i]);
     }
     printf("\n");
   }
