@@ -8,6 +8,7 @@ flags = -fdiagnostics-color=always  \
 	 -Wshadow \
 	 -Wundef \
 	 -g \
+	 -O0 \
 	 -fno-common
 
 all: main.out
