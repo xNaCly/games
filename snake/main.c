@@ -59,24 +59,8 @@ void generate_apple(char **field) {
 }
 
 void fill_playfield(char **field) {
-  for (int i = 0; i < WIDTH; i++) {
-    for (int j = 0; j < HEIGHT; j++) {
-      char c = ' ';
-
-      if ((i == 0 && j == 0) || (i == 0 && j == HEIGHT - 1) ||
-          (i == WIDTH - 1 && j == 0) || (i == WIDTH - 1 && j == HEIGHT - 1)) {
-        c = '+';
-      } else if (i == 0 || i == WIDTH - 1) {
-        c = '|';
-      } else if (j == 0 || j == HEIGHT - 1) {
-        c = '-';
-      } else if (j == 1 && i == 1) {
-        c = '@';
-      }
-
-      field[i][j] = c;
-    }
-  }
+  game_create_border(field, '|', '-', '+', WIDTH, HEIGHT);
+  field[1][1] = '@';
 }
 
 void render_playfield(char **field) {
