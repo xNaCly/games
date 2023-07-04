@@ -17,4 +17,11 @@ void game_render(char **matrix, int width, int height);
  */
 void game_destroy(char **matrix, int width);
 
+/*
+ * fills the matrix entries at the border with the given characters
+ */
+void game_create_border(char **matrix, char border_vertical,
+                        char border_horizontal, char corner, int matrix_width,
+                        int matrix_heigth);
+
 #endif
