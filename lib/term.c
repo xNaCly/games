@@ -27,4 +27,5 @@ void term_enable_raw_mode(void) {
 void term_disable_buffering(FILE *buf) { setvbuf(buf, NULL, _IONBF, 0); }
 void term_enable_buffering(FILE *buf) { setvbuf(buf, NULL, _IOLBF, 0); }
 
-void term_clear(void) { printf("\033[1;1H\033[2J"); }
+void term_clear(void) { printf(ESCAPE_CODE_CLEAR); }
+void term_hide_cursor(void) { printf(ESCAPE_CODE_HIDE_CURSOR); }

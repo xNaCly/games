@@ -4,6 +4,7 @@
 #include <stdio.h>
 
 #define ESCAPE_CODE_CLEAR "\033[1;1H\033[2J"
+#define ESCAPE_CODE_HIDE_CURSOR "\033[?25l"
 
 /**
  * enables raw input mode, which allows for unbuffered scanning of STDIN via
@@ -24,6 +25,11 @@ void term_enable_buffering(FILE *buf);
 /**
  * sends 'ESCAPE_CODE_CLEAR' to the terminal, this should clear the screen
  */
-void term_clear();
+void term_clear(void);
+
+/**
+ * sends 'ESCAPE_CODE_HIDE_CURSOR' to the terminal, hides the cursor
+ */
+void term_hide_cursor(void);
 
 #endif
