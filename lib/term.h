@@ -5,6 +5,7 @@
 
 #define ESCAPE_CODE_CLEAR "\033[1;1H\033[2J"
 #define ESCAPE_CODE_HIDE_CURSOR "\033[?25l"
+#define ESCAPE_CODE_SHOW_CURSOR "\033[?25h"
 
 /**
  * enables raw input mode, which allows for unbuffered scanning of STDIN via
@@ -31,5 +32,15 @@ void term_clear(void);
  * sends 'ESCAPE_CODE_HIDE_CURSOR' to the terminal, hides the cursor
  */
 void term_hide_cursor(void);
+
+/**
+ * sends 'ESCAPE_CODE_HIDE_CURSOR' to the terminal, hides the cursor
+ */
+void term_hide_cursor(void);
+
+/**
+ * sends 'ESCAPE_CODE_SHOW_CURSOR' to the terminal, shows the cursor
+ */
+void term_show_cursor(void);
 
 #endif
