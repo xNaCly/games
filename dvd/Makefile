@@ -2,7 +2,7 @@ libs = $(shell find ../lib -name "*.c")
 flags = -fdiagnostics-color=always  \
 	 -Wall \
 	 -Wpedantic \
-	 -std=c11 \
+	 -std=gnu11 \
 	 -Wextra \
 	 -Werror \
 	 -Wshadow \
