@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-char **game_alloc(int width, int height) {
-  char **matrix = (char **)malloc(sizeof(char *) * width);
+Field game_alloc(int width, int height) {
+  Field matrix = malloc(sizeof(char *) * width);
   if (matrix == NULL) {
     io_print_err("matrix is NULL, allocation failed! - returning NULL");
     return NULL;
@@ -17,7 +17,7 @@ char **game_alloc(int width, int height) {
   return matrix;
 }
 
-void game_render(char **matrix, int width, int height) {
+void game_render(Field matrix, int width, int height) {
   if (matrix == NULL) {
     io_print_err("matrix is NULL, can't render anything");
     return;
@@ -41,7 +41,7 @@ void game_render(char **matrix, int width, int height) {
   }
 }
 
-void game_destroy(char **matrix, int width) {
+void game_destroy(Field matrix, int width) {
   if (matrix == NULL) {
     io_print_err("matrix already NULL, means it's possibly been freed already");
     return;
@@ -52,10 +52,9 @@ void game_destroy(char **matrix, int width) {
   }
 
   free(matrix);
-  matrix = NULL;
 }
 
-void game_create_border(char **matrix, char border_vertical,
+void game_create_border(Field matrix, char border_vertical,
                         char border_horizontal, char corner, int matrix_width,
                         int matrix_heigth) {
   for (int i = 0; i < matrix_width; i++) {
