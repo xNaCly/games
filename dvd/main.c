@@ -4,61 +4,124 @@
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include <unistd.h>
 
-#define WIDTH 16
-#define HEIGHT 16
-/* #define FRAMES 25e5 */
-#define FRAMES 25e6
+#define WIDTH 64
+#define HEIGHT 32
 #define BALL '*'
+#define FPS 144
 
-int BALL_X = 1;
-int BALL_Y = 1;
+typedef enum Direction {
+  UP_LEFT,
+  DOWN_LEFT,
+  UP_RIGHT,
+  DOWN_RIGHT,
+} Direction;
 
-void fill_ball(char **game) { game[BALL_X][BALL_Y] = BALL; }
+char *DIRECTION_LOOKUP[] = {
+    [UP_LEFT] = "UP_LEFT",
+    [DOWN_LEFT] = "DOWN_LEFT",
+    [UP_RIGHT] = "UP_RIGHT",
+    [DOWN_RIGHT] = "DOWN_RIGHT",
+};
 
-int calc_x() {
-  if (BALL_X + 1 > WIDTH - 2)
-    return 1;
-  return BALL_X + 1;
+// contains coordinates and direction of the ball
+typedef struct Coord {
+  int x;
+  int y;
+  Direction direction;
+} Coord;
+
+typedef struct Game {
+  Field field;
+  Coord pos;
+} Game;
+
+Game GAME;
+
+Direction random_direction() {
+  return rand() % sizeof(DIRECTION_LOOKUP) / sizeof(char *);
 }
-int calc_y() {
-  if (BALL_Y + 1 > HEIGHT - 2)
-    return 1;
-  return BALL_Y + 1;
-}
 
-void simulate_ball(char **game) {
-  int x = calc_x();
-  int y = calc_y();
-  game[BALL_X][BALL_Y] = ' ';
-  BALL_X = x;
-  BALL_Y = y;
-  game[BALL_X][BALL_Y] = BALL;
-}
+void next_pos(Game *g) {
+  int left = 1;
+  int right = WIDTH - 2;
+  int top = 1;
+  int bottom = HEIGHT - 2;
 
-char **game;
-
-void clean_up() { game_destroy(game, WIDTH), exit(0); }
-
-int main(void) {
-  signal(SIGINT, clean_up);
-  term_disable_buffering(stdout);
-  term_hide_cursor();
-
-  game = game_alloc(WIDTH, HEIGHT);
-  game_create_border(game, '|', '-', '+', WIDTH, HEIGHT);
-
-  for (int i = 0;; i++) {
-    if (i == FRAMES) {
-      term_clear();
-      fill_ball(game);
-      game_render(game, WIDTH, HEIGHT);
-      simulate_ball(game);
-      i = 0;
-    }
+  switch (g->pos.direction) {
+  case UP_LEFT:
+    g->pos.x -= 1;
+    g->pos.y -= 1;
+    break;
+  case UP_RIGHT:
+    g->pos.x -= 1;
+    g->pos.y += 1;
+    break;
+  case DOWN_LEFT:
+    g->pos.x += 1;
+    g->pos.y -= 1;
+    break;
+  case DOWN_RIGHT:
+    g->pos.x += 1;
+    g->pos.y += 1;
+    break;
   }
 
-  clean_up();
-  return EXIT_SUCCESS;
+  if (g->pos.x > right || g->pos.x < left || g->pos.y > bottom ||
+      g->pos.y < top) {
+    g->pos.direction = random_direction();
+  }
+
+  if (g->pos.x > right) {
+    g->pos.x = right;
+  }
+  if (g->pos.x < left) {
+    g->pos.x = left;
+  }
+  if (g->pos.y > bottom) {
+    g->pos.y = bottom;
+  }
+  if (g->pos.y < top) {
+    g->pos.y = top;
+  }
+}
+
+void simulate_ball(Game *g) {
+  g->field[g->pos.x][g->pos.y] = ' ';
+  next_pos(g);
+  g->field[g->pos.x][g->pos.y] = BALL;
+}
+
+void die() {
+  game_destroy(GAME.field, WIDTH);
+  term_enable_buffering(stdout);
+  term_show_cursor();
+  exit(EXIT_SUCCESS);
+}
+
+int main(void) {
+  signal(SIGINT, die);
+  term_hide_cursor();
+  term_disable_buffering(stdout);
+  srand(time(NULL));
+
+  GAME.field = game_alloc(WIDTH, HEIGHT);
+  GAME.pos = (Coord){
+      .x = 1,
+      .y = 1,
+      .direction = random_direction(),
+  };
+  game_create_border(GAME.field, '|', '-', '+', WIDTH, HEIGHT);
+
+  while (1) {
+    term_clear();
+    GAME.field[GAME.pos.x][GAME.pos.y] = BALL;
+    game_render(GAME.field, WIDTH, HEIGHT);
+    simulate_ball(&GAME);
+    usleep(FPS / 60 * 1000);
+  }
+
+  die();
 }

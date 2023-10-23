@@ -1,7 +1,8 @@
 DVD
 ===
 
-DVD implements the famous dvd player screensaver bouncing around.
+DVD implements the famous dvd player screensaver bouncing around. With a random
+direction change upon hitting a border.
 
 Run
 ---
